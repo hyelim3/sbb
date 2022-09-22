@@ -1,9 +1,14 @@
 server:
-  port: 8081
+  port: 8082
 
 
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sbb?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/sbb?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull
     username: sbsst
+    password:
+
+  jpa:
+    hibernate:
+#    ddl-auto: create
