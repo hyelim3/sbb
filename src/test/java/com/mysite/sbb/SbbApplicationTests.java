@@ -50,4 +50,17 @@ class SbbApplicationTests {
 		}
 	}
 
+	@Test
+	void getQuestionBySubject(){
+		Question q = questionRepository.findBySubject("sbb가 무엇인가요?");
+		assertEquals(1, q.getId());
+	}
+
+	//쿼리 중복 "sbb가 무엇인가요?가 몇개 있는지 체크"
+	@Test
+	void getQuestionsBySubject(){
+		List<Question> questions = this.questionRepository.findAllBySubject("sbb가 무엇인가요?");
+		assertEquals(1, questions.size());
+	}
+
 }
