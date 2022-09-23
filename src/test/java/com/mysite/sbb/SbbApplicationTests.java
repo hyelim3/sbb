@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class SbbApplicationTests {
@@ -25,6 +28,17 @@ class SbbApplicationTests {
 		q2.setContent("id는 자동으로 생성되나요?");
 		q2.setCreateDate(LocalDateTime.now());
 		this.questionRepository.save(q2);
+	}
+
+	@Test
+	void getAll() {
+		//TDD 테스트, 테스트 주도형개발
+		//select * from question; all이라는 변수에 담김
+		List<Question> all = questionRepository.findAll(); //JPA 인터페이스에 다 들어있다. 불러올수있음
+		assertEquals(2,all.size());//앞에있는 애랑 뒤에있는 애랑 같은지 봄 sql에 있는 애랑
+
+		Question q = all.get(0); //id가 0번인 인덱스를 꺼내옴
+		assertEquals("sbb가 무엇인가요?", q.getSubject());
 	}
 
 }
