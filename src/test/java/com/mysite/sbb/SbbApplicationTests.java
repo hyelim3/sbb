@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -81,7 +82,7 @@ class SbbApplicationTests {
 	@Test
 	void findBySubjectLike(){
 		List<Question> questions = this.questionRepository.findBySubjectLike("%sbb%");
-		assertEquals(2, questions.size());
+		assertEquals(1, questions.size());
 	}
 
 	//데이터 수정하기 set
@@ -119,6 +120,19 @@ class SbbApplicationTests {
 			answer.setQuestion(question); //어떤 질문에 답변인지 알기 위해서 Question 객체가 필요하다.
 			answer.setCreateDate(LocalDateTime.now());
 			answerRepository.save(answer);
+		}
+	}
+
+	//질문에서 답변목록 불러오기
+	@Test
+	@Transactional
+	//DB연결이 끝날 때까지 안끝난다.
+	void getAnswerByQuestion(){
+		Optional<Question> oq = questionRepository.findById(2);
+		if(oq.isPresent()){
+			Question question = oq.get();
+			List<Answer> answerList = question.getAnswerList();
+			assertEquals(1, answerList.size());
 		}
 	}
 
