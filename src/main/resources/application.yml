@@ -3,7 +3,11 @@ server:
 
 
 spring:
+  devtools:
+    livereload:
+      enabled: true
   thymeleaf:
+    prefix: file:src/main/resources/templates/
     cache: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
