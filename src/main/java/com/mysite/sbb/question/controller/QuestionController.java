@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@RequestMapping("/question")
 @Controller
 @RequiredArgsConstructor
 public class QuestionController {
@@ -21,7 +22,7 @@ public class QuestionController {
     public String index(){
         return "redirect:/question/list";
     }
-    @RequestMapping("/question/list")
+    @RequestMapping("/list")
     public String list(Model model) {
         List<Question> questionList = questionService.getList();
         model.addAttribute("questionList", questionList);
@@ -29,7 +30,7 @@ public class QuestionController {
     }
 
     //단건조회
-    @RequestMapping("/question/detail/{id}")
+    @RequestMapping("/detail/{id}")
     public String detail(Model model, @PathVariable Integer id){
         System.out.println("id : "+ id);
         Question question = questionService.getQuestion(id);
