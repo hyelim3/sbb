@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,11 +19,14 @@ public class QuestionService {
 
     //단건조회 한개 조회
     public Question getQuestion(Integer id){
-        Optional<Question> questionOptional = questionRepository.findById(id);
-        if(questionOptional.isPresent()){
-            return  questionOptional.get();
-        }else{
-            throw new DataNotFoundException("question not found");
-        }
+        return questionRepository.findById(id).orElseThrow(()-> new DataNotFoundException("question not found"));
     }
+//        Optional<Question> questionOptional = questionRepository.findById(id);
+//        if(questionOptional.isPresent()){
+//            return  questionOptional.get();
+//        }else{
+//            throw new DataNotFoundException("question not found");
+//        }
+//    }
+    //짧게 쓸 수 있다. 람다식
 }
