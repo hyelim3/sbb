@@ -5,8 +5,7 @@ import com.mysite.sbb.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +35,12 @@ public class QuestionController {
         Question question = questionService.getQuestion(id);
         model.addAttribute("question", question);
         return "question_detail";
+    }
+
+    //url 매핑, 질문등록하기
+    @GetMapping("/create")
+    public String questionCreate(){
+        return "question_form"; //question_form을 불러와야함 -> html 템플릿을 작성
     }
 
 }
