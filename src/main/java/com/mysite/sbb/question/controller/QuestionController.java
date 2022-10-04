@@ -1,12 +1,18 @@
 package com.mysite.sbb.question.controller;
 
+import com.mysite.sbb.question.QuestionForm;
 import com.mysite.sbb.question.domain.Question;
 import com.mysite.sbb.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/question")
@@ -39,14 +45,17 @@ public class QuestionController {
 
     //url 매핑, 질문등록하기
     @GetMapping("/create")
-    public String questionCreate(){
+    public String questionCreate(QuestionForm questionForm){
         return "question_form"; //question_form을 불러와야함 -> html 템플릿을 작성
     }
 
     @PostMapping("/create")
-    public String questionCreate(@RequestParam String subject, @RequestParam String content){
-        //질문을 저장한다
-        questionService.create(subject, content);
+    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "question_form";
+        }
+        questionService.create(questionForm.getSubject(), questionForm.getContent());
+        //questionForm안에 있는 subject, content를 가져오겠다
         return "redirect:/question/list"; //질문 저장 후 질문 목록으로 이동
     }
 
