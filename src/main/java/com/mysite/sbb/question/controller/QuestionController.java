@@ -43,4 +43,12 @@ public class QuestionController {
         return "question_form"; //question_form을 불러와야함 -> html 템플릿을 작성
     }
 
+    @PostMapping("/create")
+    public String questionCreate(@RequestParam String subject, @RequestParam String content){
+        //질문을 저장한다
+        questionService.create(subject, content);
+        return "redirect:/question/list"; //질문 저장 후 질문 목록으로 이동
+    }
+
+
 }
