@@ -4,6 +4,9 @@ import com.mysite.sbb.question.dao.QuestionRepository;
 import com.mysite.sbb.question.domain.Question;
 import com.mysite.sbb.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,6 +33,12 @@ public class QuestionService {
         q.setContent(content);
         q.setCreateDate(LocalDateTime.now());
         questionRepository.save(q);
+    }
+
+    public Page<Question> getList(int page){
+        //정수 타입의 페이지 번호를 입력받아 해당 페이지의 질문 목록을 리턴하는 메서드로 변경
+        Pageable pageable = PageRequest.of(page,10); // 한 페이지에 보여줄 게시글 10
+        return questionRepository.findAll(pageable);
     }
 
 }

@@ -4,6 +4,7 @@ import com.mysite.sbb.answer.dao.AnswerRepository;
 import com.mysite.sbb.answer.domain.Answer;
 import com.mysite.sbb.question.dao.QuestionRepository;
 import com.mysite.sbb.question.domain.Question;
+import com.mysite.sbb.question.service.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SbbApplicationTests {
 	@Autowired
 	private QuestionRepository questionRepository;
+
+	@Autowired
+	private QuestionService questionService;
 
 	//답변을 처리하기 위해서는 답변 리포지터리가 필요
 	@Autowired
@@ -61,28 +65,28 @@ class SbbApplicationTests {
 	@Test
 	void getQuestionBySubject(){
 		Question q = questionRepository.findBySubject("sbb가 무엇인가요?");
-		assertEquals(1, q.getId());
+		assertEquals(2, q.getId());
 	}
 
 	//쿼리 중복 "sbb가 무엇인가요?가 몇개 있는지 체크"
 	@Test
 	void getQuestionsBySubject(){
 		List<Question> questions = this.questionRepository.findAllBySubject("sbb가 무엇인가요?");
-		assertEquals(1, questions.size());
+		assertEquals(3, questions.size());
 	}
 
 	//subject와 content 둘다 만족하는 거 찾기
 	@Test
 	void findBySubjectAndContent(){
 		List<Question> questions = this.questionRepository.findBySubjectAndContent("sbb가 무엇인가요?","sbb에 대해 알고 싶습니다.");
-		assertEquals(1, questions.size());
+		assertEquals(3, questions.size());
 	}
 
 	//subject 내용이 뭔가를 포함하는 거 찾기
 	@Test
 	void findBySubjectLike(){
 		List<Question> questions = this.questionRepository.findBySubjectLike("%sbb%");
-		assertEquals(1, questions.size());
+		assertEquals(3, questions.size());
 	}
 
 	//데이터 수정하기 set
@@ -132,7 +136,16 @@ class SbbApplicationTests {
 		if(oq.isPresent()){
 			Question question = oq.get();
 			List<Answer> answerList = question.getAnswerList();
-			assertEquals(1, answerList.size());
+			assertEquals(0, answerList.size());
+		}
+	}
+
+	@Test
+	void testJpa() {
+		for (int i = 1; i <= 300; i++) {
+			String subject = String.format("테스트 데이터입니다:[%03d]", i);
+			String content = "내용무";
+			this.questionService.create(subject, content);
 		}
 	}
 
